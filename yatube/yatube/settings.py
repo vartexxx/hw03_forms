@@ -57,9 +57,8 @@ ROOT_URLCONF = 'yatube.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-POSTS_ON_SCREEN = 10  # Константа для сортировки и кол-во постов
-CONST_2 = 30  # Константа для количества постов
-CONST_TEXT = 40  # Константа для обрезки текста
+LIMIT_OF_POSTS: int = 10
+CROP_TEXT: int = 40
 
 TEMPLATES = [
     {

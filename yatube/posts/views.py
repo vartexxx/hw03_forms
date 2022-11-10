@@ -3,16 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 
-
 from .forms import PostForm
 from .models import Group, Post, User
 
 
-def get_default_context(stack, request):
-    paginator = Paginator(stack, settings.POSTS_ON_SCREEN)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return page_obj
+def get_page_objects(stack, request):
+    return Paginator(stack, settings.LIMIT_OF_POSTS).get_page(
+        request.GET.get('page')
+    )
 
 
 def index(request):
@@ -21,7 +19,7 @@ def index(request):
     текущего приложения
     """
     return render(request, 'posts/index.html', {
-        'page_obj': get_default_context(Post.objects.all(), request),
+        'page_obj': get_page_objects(Post.objects.all(), request),
     })
 
 
@@ -33,7 +31,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     return render(request, 'posts/group_list.html', {
         'group': group,
-        'page_obj': get_default_context(group.posts.all(), request),
+        'page_obj': get_page_objects(group.posts.all(), request),
     })
 
 
@@ -42,16 +40,14 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
     return render(request, 'posts/profile.html', {
         'author': author,
-        'page_obj': get_default_context(author.posts.all(), request),
+        'page_obj': get_page_objects(author.posts.all(), request),
     })
 
 
 def post_detail(request, post_id):
     """Функция представления полной версии поста пользователя"""
-    post = get_object_or_404(Post, pk=post_id)
     return render(request, 'posts/post_detail.html', {
-        'post': post,
-        'author': post.author,
+        'post': get_object_or_404(Post, pk=post_id),
     })
 
 

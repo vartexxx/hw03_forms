@@ -20,9 +20,13 @@ class Group(models.Model):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name="URL адрес группы",
-        help_text="Введите URL для группы")
-    description = models.TextField()
+        verbose_name="URL превью группы",
+        help_text="Введите URL превью группы",
+    )
+    description = models.TextField(
+        verbose_name="Описание группы",
+        help_text="Введите описание группы",
+    )
 
     class Meta:
         verbose_name = 'группа'
@@ -50,7 +54,8 @@ class Post(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='posts',
-        verbose_name='Автор поста',
+        verbose_name="Автор поста",
+        help_text="Укажите автора поста",
     )
     group = models.ForeignKey(
         Group,
@@ -59,6 +64,7 @@ class Post(models.Model):
         blank=True,
         null=True,
         verbose_name="Группа",
+        help_text="Выбор группы",
     )
 
     class Meta:
@@ -67,4 +73,4 @@ class Post(models.Model):
         verbose_name_plural = 'посты'
 
     def __str__(self) -> str:
-        return str(self.text[:settings.CONST_TEXT])
+        return self.text[:settings.CROP_TEXT]
