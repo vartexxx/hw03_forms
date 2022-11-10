@@ -1,7 +1,6 @@
-"""Хранение моделей, для представления их из базы данных
-"""
-from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db import models
 
 
 User = get_user_model()
@@ -14,28 +13,33 @@ class Group(models.Model):
     адрес - slug (уникальное значение);
     описание - description
     """
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, verbose_name="Название группы")
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
+    class Meta:
+        verbose_name = 'группа'
+        verbose_name_plural = 'группы'
+
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
 
 
 class Post(models.Model):
     """Модель представления Постов(записей)
     имеет следующую стркутуру и ограничения:
-    текс - text;
+    текст - text;
     дата публикации - pub_date(автоматически
     добавляется текущая дата);
     автор - author (ссылка на модель User)
     сообщество - group (ссылка на модель Group)"""
-    text = models.TextField()
+    text = models.TextField(verbose_name='Текст поста')
     pub_date = models.DateTimeField("date published", auto_now_add=True)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='posts'
+        related_name='posts',
+        verbose_name='Автор поста'
     )
     group = models.ForeignKey(
         Group,
@@ -45,9 +49,10 @@ class Post(models.Model):
         null=True
     )
 
-    def __str__(self) -> str:
-        return self.text
-
-    # Класс Meta для упрощения сортировки по дате
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
+        verbose_name = 'пост'
+        verbose_name_plural = 'посты'
+
+    def __str__(self) -> str:
+        return str(self.text[:settings.CONST_TEXT])

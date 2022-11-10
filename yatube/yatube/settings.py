@@ -59,6 +59,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 CONST_1 = 10  # Константа для сортировки
 CONST_2 = 30  # Константа для количества постов
+CONST_TEXT = 40  # Константа для обрезки текста
 
 TEMPLATES = [
     {
