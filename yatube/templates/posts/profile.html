@@ -3,22 +3,22 @@
 {% block content %}
   <div class="container py-5">
     <h1>Все посты пользователя {{ author.username }}</h1>
-    <h3>Всего постов: {{ posts.count }} </h3>
+    <h3>Всего постов: {{ author.posts.count }} </h3>
     {% for post in page_obj %}
       <article>
         <ul>
           <li>
             Автор: {{ post.author.get_full_name }}
-            <a href="{% url 'posts:profile' post.author.username %}">все посты пользователя</a>
+            Все посты пользователя -<a href="{% url 'posts:profile' post.author.username %}"> {{ author.username }}</a>
           </li>
           <li>
             Дата публикации: {{ post.pub_date|date:"d E Y" }}
           </li>
         </ul>
-        <p>{{ post.text|linebreaks|slice:":200"|add:"..." }}
-        <a href="{% url 'posts:post_detail' post.pk %}">читать дальше</a></p>
+        <p>{{ post.text|linebreaks|slice:":200" }}
+        <a href="{% url 'posts:post_detail' post.pk %}">Читать дальше</a></p>
         {% if post.group %}
-          <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы {{ post.group }}</a>
+          <a href="{% url 'posts:group_list' post.group.slug %}">#{{ post.group }}</a>
         {% endif %}
         {% if not forloop.last %}<hr>{% endif %}
       </article>

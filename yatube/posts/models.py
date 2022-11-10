@@ -13,8 +13,15 @@ class Group(models.Model):
     адрес - slug (уникальное значение);
     описание - description
     """
-    title = models.CharField(max_length=200, verbose_name="Название группы")
-    slug = models.SlugField(unique=True)
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Название группы",
+        help_text="Введите название группы"
+    )
+    slug = models.SlugField(
+        unique=True,
+        verbose_name="URL адрес группы",
+        help_text="Введите URL для группы")
     description = models.TextField()
 
     class Meta:
@@ -22,7 +29,7 @@ class Group(models.Model):
         verbose_name_plural = 'группы'
 
     def __str__(self) -> str:
-        return str(self.title)
+        return self.title
 
 
 class Post(models.Model):
@@ -33,20 +40,25 @@ class Post(models.Model):
     добавляется текущая дата);
     автор - author (ссылка на модель User)
     сообщество - group (ссылка на модель Group)"""
-    text = models.TextField(verbose_name='Текст поста')
-    pub_date = models.DateTimeField("date published", auto_now_add=True)
+    text = models.TextField(verbose_name="Текст поста")
+    pub_date = models.DateTimeField(
+        verbose_name="Дата публикации",
+        auto_now_add=True,
+        help_text="Укажите дату публикации",
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='posts',
-        verbose_name='Автор поста'
+        verbose_name='Автор поста',
     )
     group = models.ForeignKey(
         Group,
         on_delete=models.SET_NULL,
         related_name='posts',
         blank=True,
-        null=True
+        null=True,
+        verbose_name="Группа",
     )
 
     class Meta:
