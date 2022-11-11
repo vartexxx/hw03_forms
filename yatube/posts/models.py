@@ -20,8 +20,8 @@ class Group(models.Model):
     )
     slug = models.SlugField(
         unique=True,
-        verbose_name="URL превью группы",
-        help_text="Введите URL превью группы",
+        verbose_name="Уникальный идентификатор группы",
+        help_text="Введите уникальный идентификатор группы",
     )
     description = models.TextField(
         verbose_name="Описание группы",

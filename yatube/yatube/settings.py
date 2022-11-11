@@ -57,8 +57,8 @@ ROOT_URLCONF = 'yatube.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-LIMIT_OF_POSTS: int = 10
-CROP_TEXT: int = 40
+LIMIT_OF_POSTS = 10
+CROP_TEXT = 40
 
 TEMPLATES = [
     {

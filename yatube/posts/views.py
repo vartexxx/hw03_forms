@@ -7,7 +7,7 @@ from .forms import PostForm
 from .models import Group, Post, User
 
 
-def get_page_objects(stack, request):
+def get_page(stack, request):
     return Paginator(stack, settings.LIMIT_OF_POSTS).get_page(
         request.GET.get('page')
     )
@@ -19,7 +19,7 @@ def index(request):
     текущего приложения
     """
     return render(request, 'posts/index.html', {
-        'page_obj': get_page_objects(Post.objects.all(), request),
+        'page_obj': get_page(Post.objects.all(), request),
     })
 
 
@@ -31,7 +31,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     return render(request, 'posts/group_list.html', {
         'group': group,
-        'page_obj': get_page_objects(group.posts.all(), request),
+        'page_obj': get_page(group.posts.all(), request),
     })
 
 
@@ -40,7 +40,7 @@ def profile(request, username):
     author = get_object_or_404(User, username=username)
     return render(request, 'posts/profile.html', {
         'author': author,
-        'page_obj': get_page_objects(author.posts.all(), request),
+        'page_obj': get_page(author.posts.all(), request),
     })
 
 
